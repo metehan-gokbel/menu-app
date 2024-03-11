@@ -1,21 +1,28 @@
 package com.metehan.authentication.presentation.main_screen
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.metehan.authentication.util.components.TopBar
+import com.metehan.authentication.presentation.main_screen.components.ProfileContent
 
 @Composable
-fun MainScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Main Screen", fontSize = 40.sp)
-    }
+fun MainScreen(
+    viewModel: MainViewModel = hiltViewModel()
+) {
+    Scaffold(
+        topBar = {
+            TopBar(
+                title = "Profile",
+                signOut = {
+                    viewModel.signOut()
+                },
+            )
+        },
+        content = { padding ->
+            ProfileContent(
+                padding = padding
+            )
+        }
+    )
 }
