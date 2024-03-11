@@ -1,6 +1,10 @@
 package com.metehan.authentication.presentation.login_screen
 
+import android.app.Activity
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,9 +45,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
 import com.metehan.authentication.R
+import com.metehan.authentication.presentation.login_screen.components.OneTapSignIn
 import com.metehan.authentication.presentation.login_screen.components.SignIn
 import com.metehan.authentication.presentation.login_screen.components.SignInContent
+import com.metehan.authentication.presentation.login_screen.components.SignInWithGoogle
 import com.metehan.authentication.util.components.InputTextField
 import com.metehan.authentication.presentation.navigation.Screens
 import com.metehan.authentication.presentation.ui.theme.RegularFont
@@ -55,6 +64,7 @@ fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel(),
     navigateToForgotPasswordScreen: () -> Unit,
     navigateToSignUpScreen: () -> Unit,
+    navigateToMainScreen: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -73,11 +83,47 @@ fun SignInScreen(
                     viewModel.loginUser(email, password)
                 },
                 navigateToForgotPasswordScreen = navigateToForgotPasswordScreen,
-                navigateToSignUpScreen = navigateToSignUpScreen
+                navigateToSignUpScreen = navigateToSignUpScreen,
+                oneTapSignIn = {
+                    println("oneTapSignIn")
+                    viewModel.oneTapSignIn()
+                }
             )
         }
     )
     SignIn()
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            try {
+                val credentials = viewModel.oneTapClient.getSignInCredentialFromIntent(result.data)
+                val googleIdToken = credentials.googleIdToken
+                val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
+                viewModel.signInWithGoogle(googleCredentials)
+            } catch (it: ApiException) {
+                print(it)
+            }
+        }
+    }
+
+    fun launch(signInResult: BeginSignInResult) {
+        val intent = IntentSenderRequest.Builder(signInResult.pendingIntent.intentSender).build()
+        launcher.launch(intent)
+    }
+
+    OneTapSignIn(
+        launch = {
+            launch(it)
+        }
+    )
+
+    SignInWithGoogle(
+        navigateToHomeScreen = { signedIn ->
+            if (signedIn) {
+                navigateToMainScreen()
+            }
+        }
+    )
 }
 
 

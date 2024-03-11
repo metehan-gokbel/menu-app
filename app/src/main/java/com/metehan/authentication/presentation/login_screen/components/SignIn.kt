@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -15,24 +16,24 @@ import kotlinx.coroutines.launch
 fun SignIn(
     viewModel: SignInViewModel = hiltViewModel()
 ) {
-    val state = viewModel.signInState.collectAsState(initial = null)
+    val state by viewModel.state.collectAsState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    if(state.value?.isLoading == true){
+    if(state.isLoading){
         ProgressBar()
     }
-    LaunchedEffect(key1 = state.value?.isSuccess) {
+    LaunchedEffect(key1 = state.isSuccess) {
         scope.launch {
-            if (state.value?.isSuccess?.isNotEmpty() == true) {
+            if (state.isSuccess?.isNotEmpty() == true) {
                 Unit
             }
         }
     }
-    LaunchedEffect(key1 = state.value?.isError) {
+    LaunchedEffect(key1 = state.isError) {
         scope.launch {
-            if (state.value?.isError?.isNotEmpty() == true) {
-                val error = state.value?.isError
+            if (state.isError?.isNotEmpty() == true) {
+                val error = state.isError
                 Toast.makeText(context, error, Toast.LENGTH_LONG).show()
             }
         }

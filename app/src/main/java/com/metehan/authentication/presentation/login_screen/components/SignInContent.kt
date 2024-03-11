@@ -47,7 +47,8 @@ fun SignInContent(
     padding: PaddingValues,
     signIn: (email: String, password: String) -> Unit,
     navigateToForgotPasswordScreen: () -> Unit,
-    navigateToSignUpScreen: () -> Unit
+    navigateToSignUpScreen: () -> Unit,
+    oneTapSignIn: () -> Unit
 ) {
     var email by rememberSaveable {
         mutableStateOf("")
@@ -158,9 +159,7 @@ fun SignInContent(
                     )
                 }
                 Spacer(modifier = Modifier.width(20.dp))
-                IconButton(onClick = {
-
-                }) {
+                IconButton(onClick = oneTapSignIn) {
                     Icon(
                         modifier = Modifier.size(50.dp),
                         painter = painterResource(id = R.drawable.ic_google),

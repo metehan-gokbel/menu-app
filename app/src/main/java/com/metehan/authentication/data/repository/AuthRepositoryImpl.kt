@@ -1,10 +1,19 @@
 package com.metehan.authentication.data.repository
 
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import com.metehan.authentication.domain.repository.AuthRepository
+import com.metehan.authentication.util.Constants.SIGN_IN_REQUEST
+import com.metehan.authentication.util.Constants.SIGN_UP_REQUEST
 import com.metehan.authentication.util.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
@@ -17,8 +26,17 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import javax.inject.Named
 
-class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAuth) :
+class AuthRepositoryImpl @Inject constructor(
+    private val firebaseAuth: FirebaseAuth,
+    private var oneTapClient: SignInClient,
+    @Named(SIGN_IN_REQUEST)
+    private var signInRequest: BeginSignInRequest,
+    @Named(SIGN_UP_REQUEST)
+    private var signUpRequest: BeginSignInRequest,
+    private val db: FirebaseFirestore
+) :
     AuthRepository {
 
     override val currentUser get() = firebaseAuth.currentUser
@@ -91,4 +109,32 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             emit(Resource.Error(message = it.message.toString()))
         }
     }
+
+    override suspend fun oneTapSignInWithGoogle(): Flow<Resource<BeginSignInResult>> {
+        return flow {
+            emit(Resource.Loading())
+            val signInResult = oneTapClient.beginSignIn(signInRequest).await()
+            emit(Resource.Success(data = signInResult))
+        }.catch {
+            try {
+                val signUpResult = oneTapClient.beginSignIn(signUpRequest).await()
+                emit(Resource.Success(data = signUpResult))
+            }catch (e: Exception){
+                emit(Resource.Error(message = it.message.toString()))
+            }
+        }
+    }
+
+    override suspend fun firebaseSignInWithGoogle(googleCredential: AuthCredential): Flow<Resource<Boolean>> {
+        return flow{
+            emit(Resource.Loading())
+            val authResult = firebaseAuth.signInWithCredential(googleCredential).await()
+            val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
+            emit(Resource.Success(data = true))
+        }.catch {
+            emit(Resource.Error(message = it.message.toString()))
+        }
+    }
+
+
 }

@@ -26,6 +26,9 @@ fun NavigationGraph(
                 },
                 navigateToSignUpScreen = {
                     navController.navigate(Screens.SignUpScreen.route)
+                },
+                navigateToMainScreen = {
+                    navController.navigate(Screens.MainScreen.route)
                 }
             )
         }
