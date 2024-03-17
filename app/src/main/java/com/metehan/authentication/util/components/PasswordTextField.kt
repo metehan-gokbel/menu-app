@@ -1,5 +1,6 @@
 package com.metehan.authentication.util.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -14,6 +15,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -28,13 +31,15 @@ fun PasswordTextField(
     var passwordIsVisible by remember { mutableStateOf(false) }
 
     OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
         value = password,
         onValueChange = { newValue ->
             onValueChange(newValue)
         },
         label = {
             Text(
-                text = labelName
+                text = labelName,
+                color = Color.LightGray
             )
         },
         singleLine = true,
@@ -59,7 +64,8 @@ fun PasswordTextField(
             ) {
                 Icon(
                     imageVector = icon,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = Color.LightGray
                 )
             }
         }

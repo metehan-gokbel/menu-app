@@ -1,17 +1,33 @@
 package com.metehan.authentication.presentation
 
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Modifier
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
+import com.metehan.authentication.R
 import com.metehan.authentication.presentation.main_screen.MainViewModel
 import com.metehan.authentication.presentation.navigation.NavigationGraph
 import com.metehan.authentication.presentation.navigation.Screens
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -63,5 +79,4 @@ class MainActivity : ComponentActivity() {
             inclusive = true
         }
     }
-
 }

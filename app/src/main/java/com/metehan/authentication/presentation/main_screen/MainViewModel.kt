@@ -3,7 +3,6 @@ package com.metehan.authentication.presentation.main_screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.metehan.authentication.domain.repository.AuthRepository
-import com.metehan.authentication.presentation.login_screen.SignInState
 import com.metehan.authentication.presentation.register_screen.SignUpState
 import com.metehan.authentication.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

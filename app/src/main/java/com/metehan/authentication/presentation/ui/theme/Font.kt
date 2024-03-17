@@ -15,3 +15,9 @@ val RegularFont = FontFamily(
 val SplashScreen = FontFamily(
     Font(R.font.michroma, FontWeight.Normal)
 )
+
+val BoldFont = FontFamily(
+    Font(R.font.poppinsmedium),
+    Font(R.font.poppinssemibold, FontWeight.Bold)
+)
+

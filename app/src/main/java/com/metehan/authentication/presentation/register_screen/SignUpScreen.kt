@@ -18,10 +18,7 @@ fun SignUpScreen(
     val context = LocalContext.current
     Scaffold(
         topBar = {
-            SignUpTopBar(
-                "Sign Up Screen",
-                navigateBack = navigateBack
-            )
+
         },
         content = { padding ->
             SignUpContent(
