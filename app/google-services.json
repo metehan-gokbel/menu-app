@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "626946850927",
-    "project_id": "authentication-30a69",
-    "storage_bucket": "authentication-30a69.appspot.com"
+    "project_number": "1084644305222",
+    "project_id": "fir-app-547d2",
+    "storage_bucket": "fir-app-547d2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:626946850927:android:fe81fb2d946fda0c0f0d9a",
+        "mobilesdk_app_id": "1:1084644305222:android:67f2631b07662f975bdd47",
         "android_client_info": {
           "package_name": "com.metehan.authentication"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBufweoJA4p-FW8CljOc1ekHovtNY30Uio"
+          "current_key": "AIzaSyCzoGRBFNCfd49rh--DyQyqj2VF4_DUCmM"
         }
       ],
       "services": {

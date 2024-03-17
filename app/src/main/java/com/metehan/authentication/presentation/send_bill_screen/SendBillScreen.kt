@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -74,6 +75,12 @@ fun SendBillScreen(
         }
     }
 
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            capturedImageUri = it
+        }
+    }
+
 
     if (imageUploadState is ImageUploadState.Success) {
         LaunchedEffect(imageUploadState) {
@@ -107,7 +114,9 @@ fun SendBillScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             OutlinedButton(
@@ -130,14 +139,10 @@ fun SendBillScreen(
                     modifier = Modifier.padding(8.dp)
                 )
             }
+            Spacer(modifier = Modifier.width(8.dp))
             OutlinedButton(
                 onClick = {
-                    val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                        cameraLauncher.launch(uri)
-                    } else {
-                        permissionLauncher.launch(Manifest.permission.CAMERA)
-                    }
+                    galleryLauncher.launch("image/*")
                 },
                 modifier = Modifier
                     .weight(1f)

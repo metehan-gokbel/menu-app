@@ -8,17 +8,21 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.metehan.authentication.R
+import com.metehan.authentication.data.remote.AuthInterceptor
 import com.metehan.authentication.data.remote.MenuAPI
 import com.metehan.authentication.data.repository.AuthRepositoryImpl
+import com.metehan.authentication.data.repository.FirebaseTokenProvider
 import com.metehan.authentication.data.repository.ImageRepositoryImpl
 import com.metehan.authentication.data.repository.MenuRepositoryImpl
 import com.metehan.authentication.domain.repository.AuthRepository
 import com.metehan.authentication.domain.repository.ImageRepository
 import com.metehan.authentication.domain.repository.MenuRepository
+import com.metehan.authentication.domain.repository.TokenProvider
 import com.metehan.authentication.util.Constants.BASE_URL
 import com.metehan.authentication.util.Constants.SIGN_IN_REQUEST
 import com.metehan.authentication.util.Constants.SIGN_UP_REQUEST
@@ -27,6 +31,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
@@ -44,9 +49,20 @@ object AppModule {
     fun provideFirebaseFirestore() = Firebase.firestore
 
     @Provides
-    fun provideMenuAPI(): MenuAPI{
+    @Singleton
+    fun provideFirebaseUser(firebaseAuth: FirebaseAuth): FirebaseUser {
+        return firebaseAuth.currentUser ?: throw IllegalStateException("Firebase user is null")
+    }
+
+    @Provides
+    fun provideMenuAPI(tokenProvider: TokenProvider): MenuAPI{
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(tokenProvider))
+            .build()
+
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MenuAPI::class.java)
@@ -56,6 +72,11 @@ object AppModule {
     @Singleton
     fun provideMenuRepository(api: MenuAPI): MenuRepository {
         return MenuRepositoryImpl(api)
+    }
+
+    @Provides
+    fun provideTokenProvider(firebaseUser: FirebaseUser): TokenProvider {
+        return FirebaseTokenProvider(firebaseUser)
     }
 
     @Provides

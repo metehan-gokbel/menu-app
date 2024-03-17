@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.metehan.authentication.domain.repository.AuthRepository
 import com.metehan.authentication.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,6 +36,7 @@ class SignInViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _state.emit(SignInState(isSuccess = "Sign In Success"))
+                    val token = result.data?.let { getTokenFromAuthResult(it) }
                 }
 
                 is Resource.Loading -> {
@@ -46,6 +48,11 @@ class SignInViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getTokenFromAuthResult(authResult: AuthResult): String {
+        val token = authResult.user?.getIdToken(false)?.result?.token
+        return token ?: ""
     }
 
     fun oneTapSignIn() = viewModelScope.launch {
