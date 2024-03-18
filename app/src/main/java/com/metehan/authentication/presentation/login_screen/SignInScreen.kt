@@ -21,7 +21,8 @@ fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel(),
     navigateToForgotPasswordScreen: () -> Unit,
     navigateToSignUpScreen: () -> Unit,
-    navigateToMainScreen: () -> Unit
+    navigateToMainScreen: () -> Unit,
+    navigateToMainScreenWithAnonymous: () -> Unit,
 ) {
     Scaffold(
         content = { padding ->
@@ -34,6 +35,9 @@ fun SignInScreen(
                 navigateToSignUpScreen = navigateToSignUpScreen,
                 oneTapSignIn = {
                     viewModel.oneTapSignIn()
+                },
+                navigateToAnonymous = {
+                    viewModel.loginAnonymously()
                 }
             )
         }

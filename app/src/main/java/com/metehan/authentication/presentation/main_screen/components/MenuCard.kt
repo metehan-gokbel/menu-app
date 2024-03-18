@@ -25,8 +25,8 @@ fun MenuCard(
 ) {
     Card(
         modifier = Modifier
-            .height(80.dp)
-            .width(LocalConfiguration.current.screenWidthDp.dp / 3)
+            .height(LocalConfiguration.current.screenHeightDp.dp / 5)
+            .width(LocalConfiguration.current.screenWidthDp.dp / 2)
             .padding(6.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(8.dp),

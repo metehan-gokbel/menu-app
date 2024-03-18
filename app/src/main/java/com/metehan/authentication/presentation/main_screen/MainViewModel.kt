@@ -18,6 +18,7 @@ class MainViewModel @Inject constructor(private val repository: AuthRepository):
     val reloadUserState = _reloadUserState.receiveAsFlow()
 
     val isEmailVerified get() = repository.currentUser?.isEmailVerified ?: false
+    val isAnonymous get() = repository.currentUser?.isAnonymous?: false
 
     fun signOut() = repository.signOut()
 

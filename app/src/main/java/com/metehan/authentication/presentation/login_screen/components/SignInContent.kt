@@ -53,6 +53,7 @@ fun SignInContent(
     signIn: (email: String, password: String) -> Unit,
     navigateToForgotPasswordScreen: () -> Unit,
     navigateToSignUpScreen: () -> Unit,
+    navigateToAnonymous: () -> Unit,
     oneTapSignIn: () -> Unit
 ) {
     var email by rememberSaveable {
@@ -130,6 +131,16 @@ fun SignInContent(
             fontWeight = FontWeight.Medium,
             color = LightBlue,
         )
+//        Spacer(modifier = Modifier.height(16.dp))
+//        Text(
+//            text = "Continue without signing up",
+//            modifier = Modifier
+//                .clickable {
+//                    navigateToAnonymous()
+//                },
+//            fontWeight = FontWeight.Medium,
+//            color = LightBlue,
+//        )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "or Connect with",
@@ -170,6 +181,7 @@ fun SignInContent(
             }
         }
         Spacer(modifier = Modifier.weight(1f))
+
         Text(
             text = "Don't you have an account?",
             modifier = Modifier
@@ -188,6 +200,21 @@ fun SignInContent(
         ) {
             Text(
                 text = "Sign Up",
+                color = LightBlue,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        OutlinedButton(
+            onClick = {
+                navigateToAnonymous()
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = CircleShape,
+            border = BorderStroke(1.dp, LightBlue)
+        ) {
+            Text(
+                text = "Continue without signing up",
                 color = LightBlue,
                 modifier = Modifier.padding(8.dp)
             )

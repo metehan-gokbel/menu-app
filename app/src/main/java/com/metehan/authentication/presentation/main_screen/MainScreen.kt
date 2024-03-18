@@ -1,15 +1,23 @@
 package com.metehan.authentication.presentation.main_screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,14 +25,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.metehan.authentication.R
 import com.metehan.authentication.presentation.main_screen.components.MenuCard
 
 @Composable
 fun MainScreen(
     navigateToMenuScreen: () -> Unit,
-    navigateToSendBillScreen: () -> Unit
+    navigateToSendBillScreen: () -> Unit,
+//    navigateToSignInScreen: () -> Unit,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
+    Row(
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.Top,
+    ) {
+        IconButton(onClick = {
+            viewModel.signOut()
+//            navigateToSignInScreen()
+        }) {
+            Icon(
+                imageVector = Icons.Default.Logout,
+                contentDescription = "Logout",
+                modifier = Modifier.size(80.dp)
+            )
+        }
+    }
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -74,7 +100,6 @@ fun MainScreen(
                 .padding(start = 6.dp, end = 6.dp)
                 .height(80.dp),
             shape = RoundedCornerShape(16.dp),
-
         ) {
             Text(
                 text = "Send Us To Bill",
@@ -82,5 +107,6 @@ fun MainScreen(
                 modifier = Modifier.padding(8.dp)
             )
         }
+
     }
 }

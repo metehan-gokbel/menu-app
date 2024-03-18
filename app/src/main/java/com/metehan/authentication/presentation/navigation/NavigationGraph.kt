@@ -39,7 +39,10 @@ fun NavigationGraph(
                 },
                 navigateToMainScreen = {
                     navController.navigate(Screens.MainScreen.route)
-                }
+                },
+                navigateToMainScreenWithAnonymous = {
+                    navController.navigate(Screens.MainScreen.route)
+                },
             )
         }
         composable(route = Screens.SignUpScreen.route) {
@@ -87,7 +90,10 @@ fun NavigationGraph(
                     },
                     navigateToSendBillScreen = {
                         navController.navigate(Screens.SendBillScreen.route)
-                    }
+                    },
+//                    navigateToSignInScreen = {
+//                        navController.navigate(Screens.SignInScreen.route)
+//                    }
                 )
             }
         }

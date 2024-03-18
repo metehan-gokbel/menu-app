@@ -7,9 +7,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.metehan.authentication.domain.repository.AuthRepository
 import com.metehan.authentication.util.Constants.SIGN_IN_REQUEST
@@ -45,6 +43,16 @@ class AuthRepositoryImpl @Inject constructor(
         return flow {
             emit(Resource.Loading())
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            emit(Resource.Success(data = result))
+        }.catch {
+            emit(Resource.Error(message = it.message.toString()))
+        }
+    }
+
+    override fun loginAnonymous(): Flow<Resource<AuthResult>> {
+        return flow {
+            emit(Resource.Loading())
+            val result = firebaseAuth.signInAnonymously().await()
             emit(Resource.Success(data = result))
         }.catch {
             emit(Resource.Error(message = it.message.toString()))

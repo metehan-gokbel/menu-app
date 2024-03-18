@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface AuthRepository {
     val currentUser: FirebaseUser?
     fun loginUser(email: String, password: String): Flow<Resource<AuthResult>>
+    fun loginAnonymous(): Flow<Resource<AuthResult>>
     fun registerUser(name: String, email: String, password: String): Flow<Resource<AuthResult>>
     fun sendEmailVerification(): Flow<Resource<Boolean>>
     suspend fun reloadFirebaseUser(): Flow<Resource<Boolean>>

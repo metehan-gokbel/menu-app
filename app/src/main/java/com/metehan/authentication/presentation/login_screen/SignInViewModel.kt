@@ -50,6 +50,25 @@ class SignInViewModel @Inject constructor(
         }
     }
 
+    fun loginAnonymously() = viewModelScope.launch {
+        repository.loginAnonymous().collect { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _state.emit(SignInState(isSuccess = "Sign In Success"))
+                    result.data?.let { getTokenFromAuthResult(it) }
+                }
+
+                is Resource.Loading -> {
+                    _state.emit(SignInState(isLoading = true))
+                }
+
+                is Resource.Error -> {
+                    _state.emit(SignInState(isError = result.message))
+                }
+            }
+        }
+    }
+
     fun getTokenFromAuthResult(authResult: AuthResult): String {
         val token = authResult.user?.getIdToken(false)?.result?.token
         return token ?: ""

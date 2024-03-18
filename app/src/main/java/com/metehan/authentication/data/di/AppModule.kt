@@ -55,6 +55,7 @@ object AppModule {
     }
 
     @Provides
+    @Singleton
     fun provideMenuAPI(tokenProvider: TokenProvider): MenuAPI{
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(tokenProvider))

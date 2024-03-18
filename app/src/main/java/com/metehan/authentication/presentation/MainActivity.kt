@@ -53,7 +53,10 @@ class MainActivity : ComponentActivity() {
         } else {
             if (viewModel.isEmailVerified) {
                 NavigateToProfileScreen()
-            } else {
+            }else if(viewModel.isAnonymous){
+                NavigateToProfileScreen()
+            }
+            else {
                 NavigateToVerifyEmailScreen()
             }
         }
