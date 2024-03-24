@@ -18,6 +18,7 @@ import com.metehan.authentication.presentation.menu_detail_screen.MenuDetailScre
 import com.metehan.authentication.presentation.menu_screen.MenuScreen
 import com.metehan.authentication.presentation.register_screen.SignUpScreen
 import com.metehan.authentication.presentation.send_bill_screen.SendBillScreen
+import com.metehan.authentication.presentation.show_map.ShowMap
 import com.metehan.authentication.presentation.verify_email_screen.VerifyEmailScreen
 import com.metehan.authentication.util.Constants.MERCHANT_ID
 
@@ -79,6 +80,16 @@ fun NavigationGraph(
                 SendBillScreen(navController = navController)
             }
         }
+
+        composable(route = Screens.ShowMap.route) {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                ShowMap(navController = navController)
+            }
+        }
+
         composable(route = Screens.MainScreen.route) {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -121,3 +132,4 @@ fun NavigationGraph(
     }
 
 }
+
