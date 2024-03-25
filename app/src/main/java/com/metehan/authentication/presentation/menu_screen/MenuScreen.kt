@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.metehan.authentication.domain.models.Merchant
 import com.metehan.authentication.presentation.menu_screen.components.MenuAction
 import com.metehan.authentication.presentation.menu_screen.components.MenuSearchBar
 import com.metehan.authentication.presentation.menu_screen.components.MerchantList
@@ -30,7 +31,8 @@ import com.metehan.authentication.presentation.menu_screen.components.MerchantLi
 @Composable
 fun MenuScreen(
     navController: NavController,
-    viewModel: MenuViewModel = hiltViewModel()
+    viewModel: MenuViewModel = hiltViewModel(),
+    merchants: List<Merchant>
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background,
@@ -54,6 +56,7 @@ fun MenuScreen(
                     .padding(start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
                 navController,
+                merchants
             )
             Spacer(modifier = Modifier.height(8.dp))
             MerchantList(navController = navController)

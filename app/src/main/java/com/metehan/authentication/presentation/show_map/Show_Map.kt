@@ -10,13 +10,15 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
+import com.metehan.authentication.domain.models.Merchant
 
 @Composable
 fun ShowMap(
     navController: NavController,
+    merchants: List<Merchant>
     ) {
 
-    val marker = LatLng(38.46307718783008, 27.250583446031168)
+    val marker = LatLng(40.12150192260742,-100.45039367675781)
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         properties = MapProperties(

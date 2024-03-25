@@ -11,6 +11,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.metehan.authentication.domain.models.MerchantList
 import com.metehan.authentication.presentation.forgot_password_screen.ForgotPasswordScreen
 import com.metehan.authentication.presentation.login_screen.SignInScreen
 import com.metehan.authentication.presentation.main_screen.MainScreen
@@ -81,12 +82,19 @@ fun NavigationGraph(
             }
         }
 
-        composable(route = Screens.ShowMap.route) {
+        composable(route = Screens.ShowMap.route,
+            arguments = listOf(
+                navArgument("merchantList") {
+                    type = NavType.ParcelableType(MerchantList::class.java)
+                }
+            )
+        ) {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                ShowMap(navController = navController)
+                val merchantList = it.arguments?.getParcelable<MerchantList>("merchantList")?.merchants
+                ShowMap(navController = navController, merchants = merchantList!!)
             }
         }
 

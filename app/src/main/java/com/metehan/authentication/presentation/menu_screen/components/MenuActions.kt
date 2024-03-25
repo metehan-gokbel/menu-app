@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.metehan.authentication.R
+import com.metehan.authentication.domain.models.Merchant
+import com.metehan.authentication.domain.models.Product
 import com.metehan.authentication.presentation.navigation.Screens
 import com.metehan.authentication.presentation.ui.theme.LightBlue
 
@@ -43,6 +45,7 @@ import com.metehan.authentication.presentation.ui.theme.LightBlue
 fun MenuAction(
     modifier: Modifier,
     navController: NavController,
+    merchants: List<Merchant>
 ) {
     val context = LocalContext.current
 
@@ -77,7 +80,7 @@ fun MenuAction(
         MenuIconWithText(painterResource(id = R.drawable.ic_map), "Show Map") {
             val permissionCheckResult = ContextCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION)
             if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                navController.navigate(Screens.ShowMap.route)
+                navController.navigate(Screens.ShowMap.route, merchants)
             } else {
                 permissionLauncher.launch(ACCESS_FINE_LOCATION)
             }
