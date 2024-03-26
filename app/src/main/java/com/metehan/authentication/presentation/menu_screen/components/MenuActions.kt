@@ -44,8 +44,7 @@ import com.metehan.authentication.presentation.ui.theme.LightBlue
 @Composable
 fun MenuAction(
     modifier: Modifier,
-    navController: NavController,
-    merchants: List<Merchant>
+    navController: NavController
 ) {
     val context = LocalContext.current
 
@@ -80,7 +79,7 @@ fun MenuAction(
         MenuIconWithText(painterResource(id = R.drawable.ic_map), "Show Map") {
             val permissionCheckResult = ContextCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION)
             if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                navController.navigate(Screens.ShowMap.route, merchants)
+                navController.navigate(Screens.ShowMap.route)
             } else {
                 permissionLauncher.launch(ACCESS_FINE_LOCATION)
             }

@@ -6,6 +6,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -22,11 +23,13 @@ import com.metehan.authentication.presentation.send_bill_screen.SendBillScreen
 import com.metehan.authentication.presentation.show_map.ShowMap
 import com.metehan.authentication.presentation.verify_email_screen.VerifyEmailScreen
 import com.metehan.authentication.util.Constants.MERCHANT_ID
+import com.metehan.authentication.util.SharedViewModel
 
 @Composable
 fun NavigationGraph(
     navController: NavHostController
 ) {
+    val sharedViewModel: SharedViewModel = viewModel()
     NavHost(
         navController = navController,
         startDestination = Screens.SignInScreen.route
@@ -66,11 +69,12 @@ fun NavigationGraph(
             )
         }
         composable(route = Screens.MenuScreen.route) {
+
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                MenuScreen(navController = navController)
+                MenuScreen(navController = navController, sharedViewModel = sharedViewModel)
             }
         }
         composable(route = Screens.SendBillScreen.route) {
@@ -82,19 +86,12 @@ fun NavigationGraph(
             }
         }
 
-        composable(route = Screens.ShowMap.route,
-            arguments = listOf(
-                navArgument("merchantList") {
-                    type = NavType.ParcelableType(MerchantList::class.java)
-                }
-            )
-        ) {
+        composable(route = Screens.ShowMap.route) {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                val merchantList = it.arguments?.getParcelable<MerchantList>("merchantList")?.merchants
-                ShowMap(navController = navController, merchants = merchantList!!)
+                ShowMap(navController = navController, sharedViewModel = sharedViewModel)
             }
         }
 
